@@ -100,6 +100,7 @@ class StudentController extends Controller
         if ($students) {
 
             // menangkap data request
+            // ?? jika ada data baru akan diganti jika data kosong maka akan dipakai data yang lama
             $input = [
                 'nama' => $request->nama ?? $students->nama,
                 'nim' => $request->nim ?? $students->nim,
