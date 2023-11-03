@@ -13,19 +13,62 @@ class StudentController extends Controller
         // mendapatkan semua data students
         $students = Student::all();
 
+        // jika data kosong maka kirim status code 304
+        if ($students->isEmpty()) {
+            $data = [
+                "message" => "Resources is Empty"
+            ];
+
+            return response()->json($data, 204);
+        }
+
         $data = [
             "message" => "Get All Resources",
             "data" => $students
         ];
 
-        // kirim data (json) dan response code (200)
+        // kirim data (json) dan status code (200)
         // status code sangat dibutuhkan oleh front-end
         return response()->json($data, 200);
     }
 
+
+    // membuat method show
+    public function show($id)
+    {
+        // mencari data dengan $id menggunakan model Student
+        $students = Student::find($id);
+
+        if ($students) {
+            $data = [
+                'message' => 'Show Detail Student',
+                'data' => $students
+            ];
+
+            // mengembalikan data (json) dan kode 200
+            return response()->json($data, 200);
+        } else {
+            $data = [
+                'message' => 'Data Not Found'
+            ];
+
+            // mengembalikan data (json) dan kode 404
+            return response()->json($data, 404);
+        }
+    }
+
+
     // membuat method store
     public function store(Request $request)
     {
+        // validasi data request
+        $request->validate([
+            "nama" => "required",
+            "nim" => "required",
+            "email" => "required|email",
+            "jurusan" => "required"
+        ]);
+
         // menangkap data request
         $input = [
             'nama' => $request->nama,
@@ -42,9 +85,10 @@ class StudentController extends Controller
             "data" => $students
         ];
 
-        // mengembalikan data (json) dan response code
+        // mengembalikan data (json) dan status code
         return response()->json($data, 201);
     }
+
 
     // membuat method update
     public function update($id, Request $request)
@@ -53,21 +97,36 @@ class StudentController extends Controller
         $students = Student::find($id);
 
         // mengupdate data dengan fungsi update
-        $students->update([
-            'nama' => $request->nama,
-            'nim' => $request->nim,
-            'email' => $request->email,
-            'jurusan' => $request->jurusan
-        ]);
+        if ($students) {
 
-        $data = [
-            "message" => "Data Updated Succesfully",
-            "data" => $students
-        ];
+            // menangkap data request
+            $input = [
+                'nama' => $request->nama ?? $students->nama,
+                'nim' => $request->nim ?? $students->nim,
+                'email' => $request->email ?? $students->email,
+                'jurusan' => $request->jurusan ?? $students->jurusan
+            ];
 
-        // mengembalikan data (json) dan response code
-        return response()->json($data, 200);
+            // melakukan update data
+            $students->update($input);
+
+            $data = [
+                "message" => "Student is Updated",
+                "data" => $students
+            ];
+
+            // mengembalikan data (json) dan status code
+            return response()->json($data, 200);
+        } else {
+            $data = [
+                'message' => 'Student Not Found'
+            ];
+
+            // mengembalikan data (json) dan status code
+            return response()->json($data, 404);
+        }
     }
+
 
     // membuat method destroy
     public function destroy($id)
@@ -75,14 +134,23 @@ class StudentController extends Controller
         // mencari data dengan $id menggunakan model Student
         $students = Student::find($id);
 
-        // menghapus data dengan fungsi delete
-        $students->delete();
+        if ($students) {
 
-        $data = [
-            "message" => "Data Deleted Succesfully"
-        ];
+            // menghapus data dengan fungsi delete
+            $students->delete();
 
-        // mengembalikan data (json) dan response code
-        return response()->json($data, 200);
+            $data = [
+                "message" => "Student is Deleted"
+            ];
+
+            // mengembalikan data (json) dan status code
+            return response()->json($data, 200);
+        } else {
+            $data = [
+                'message' => 'Student Not Found'
+            ];
+
+            return response()->json($data, 404);
+        }
     }
 }
