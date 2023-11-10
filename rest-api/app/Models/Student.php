@@ -10,5 +10,10 @@ class Student extends Model
     use HasFactory;
 
     // mendefinisikan atribut untuk dapat diisi secara massal
-    protected $fillable = ['nama', 'nim', 'email', 'jurusan'];
+    protected $fillable = [
+        'nama',
+        'nim',
+        'email',
+        'jurusan'
+    ];
 }
