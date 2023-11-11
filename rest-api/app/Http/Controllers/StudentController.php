@@ -21,16 +21,16 @@ class StudentController extends Controller
             ];
 
             return response()->json($data, 204);
+        } else {
+            $data = [
+                "message" => "Get All Resources",
+                "data" => $students
+            ];
+
+            // kirim data (json) dan status code (200)
+            // status code sangat dibutuhkan oleh front-end
+            return response()->json($data, 200);
         }
-
-        $data = [
-            "message" => "Get All Resources",
-            "data" => $students
-        ];
-
-        // kirim data (json) dan status code (200)
-        // status code sangat dibutuhkan oleh front-end
-        return response()->json($data, 200);
     }
 
 
@@ -65,8 +65,8 @@ class StudentController extends Controller
         // validasi data request
         $request->validate([
             "nama" => "required",
-            "nim" => "numeric|required",
-            "email" => "required|email",
+            "nim" => "required",
+            "email" => "email|required",
             "jurusan" => "required"
         ]);
 
