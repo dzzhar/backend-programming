@@ -3,7 +3,7 @@
  * - import fruits dari data/fruits.js
  * - refactor variable ke ES6 variable
  */
-const fruits = require('../data/data');
+const fruits = require('../Models/data');
 
 /**
  * TODO 4: Buat method index
@@ -29,7 +29,7 @@ const index = () => {
  * 
  * @param {string} name - nama buah yang baru
  * 
- * @hint - Gunakan Array Push
+ * @hint - Gunakan Array Push(item)
  */
 const store = (name) => {
     fruits.push(name);
@@ -61,11 +61,10 @@ const update = (position, name) => {
  * TODO 7: Buat method destroy
  * - Untuk menghapus data buah
  * - refactor function ke ES6 Arrow Function
- * - array.splice(index, howmany)
  * 
  * @param {number} position - index yang ingin dihapus
  * 
- * @hint - Gunakan Array Splice
+ * @hint - Gunakan Array Splice(index, howmany)
  */
 const destroy = (position) => {
     fruits.splice(position, 1);
