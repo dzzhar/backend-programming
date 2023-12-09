@@ -8,7 +8,7 @@ const showDownload = (result) => {
 
 /**
  * Fungsi untuk download file
- * @param {function} callback - Function callback show
+ * @param {function} Promise - Function promise show
  */
 const download = () => {
   return new Promise((resolve) => {
@@ -19,6 +19,7 @@ const download = () => {
   });
 };
 
+// Consuming Promise
 download().then((result) => {
   return showDownload(result);
 });
