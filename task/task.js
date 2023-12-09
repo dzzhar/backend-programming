@@ -3,7 +3,7 @@
  * @param {string} result - Nama file yang didownload
  */
 const showDownload = (result) => {
-  console.log(`Download Selesai \nHasil Download: ${result}`);
+  console.log(`Download Selesai  \nHasil Download: ${result}`);
 };
 
 /**
