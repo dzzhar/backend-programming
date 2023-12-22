@@ -1,11 +1,13 @@
-// TODO 3: Import data students dari folder data/students.js
-const students = require("../data/students.js");
+// Import Model Student
+const Student = require("../models/Student.js");
 
 // membuat class StudentController
 class StudentController {
-  // method index
-  index(req, res) {
-    // TODO 4: Tampilkan data students
+  // menambahkan keyword async
+  async index(req, res) {
+    // memanggil method static all dengan async await
+    const students = await Student.all();
+
     const data = {
       message: "Menampilkan semua students",
       data: students,
@@ -15,14 +17,24 @@ class StudentController {
   }
 
   // method store
-  store(req, res) {
-    // TODO 5: Tambahkan data students
-    const { nama } = req.body;
+  async store(req, res) {
+    /**
+     * TODO 2: memanggil method create.
+     * Method create mengembalikan data yang baru di insert
+     * Mengembalikan response dalam bentuk json
+     */
 
-    students.push(nama);
+    // ambil data student sebagai req.body
+    const { nama, nim, email, jurusan } = req.body;
+
+    // buat objek baru -> dataInput
+    const dataInput = { nama, nim, email, jurusan };
+
+    // memanggil method static create dengan async await
+    const students = await Student.create(dataInput);
 
     const data = {
-      message: `Menambahkan data student: ${nama}`,
+      message: `Menambahkan data student ${nama}`,
       data: students,
     };
 
