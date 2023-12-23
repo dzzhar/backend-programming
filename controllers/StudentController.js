@@ -27,7 +27,7 @@ class StudentController {
     // ambil data student sebagai req.body
     const { nama, nim, email, jurusan } = req.body;
 
-    // buat objek baru -> student
+    // buat objek baru -> input
     const input = { nama, nim, email, jurusan };
 
     // memanggil method static create dengan async await
