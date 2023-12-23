@@ -27,15 +27,15 @@ class StudentController {
     // ambil data student sebagai req.body
     const { nama, nim, email, jurusan } = req.body;
 
-    // buat objek baru -> dataInput
-    const dataInput = { nama, nim, email, jurusan };
+    // buat objek baru -> student
+    const input = { nama, nim, email, jurusan };
 
     // memanggil method static create dengan async await
-    const students = await Student.create(dataInput);
+    const students = await Student.create(input);
 
     const data = {
       message: `Menambahkan data student ${nama}`,
-      data: students,
+      data: input,
     };
 
     res.json(data);
