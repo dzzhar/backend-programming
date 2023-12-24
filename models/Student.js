@@ -31,7 +31,7 @@ class Student {
       const sql = "INSERT INTO students SET ?";
 
       db.query(sql, data, (err, results) => {
-        resolve(results.insertId);
+        resolve(results);
       });
     });
   }
