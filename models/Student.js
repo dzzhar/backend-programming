@@ -27,7 +27,7 @@ class Student {
    */
   static create(data) {
     // return Promise
-    const process = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const sql = "INSERT INTO students SET ?";
 
       db.query(sql, data, (err, results) => {
