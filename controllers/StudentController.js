@@ -3,22 +3,18 @@ const Student = require("../models/Student.js");
 
 // membuat class StudentController
 class StudentController {
-  // menambahkan keyword async
+  // method index
   async index(req, res) {
-    // memanggil method static all dengan async await
     const students = await Student.all();
 
     /**
      * refactor
      * - menghandle jika data kosong
      * - menggunakan handle short if else
-     *
-     * mysql
-     * - TRUNCATE TABLE table_name -> hapus data table permanen
      */
     if (students.length > 0) {
       const data = {
-        message: "Menampilkan Semua Students",
+        message: "Get All Resources",
         data: students,
       };
 
@@ -35,44 +31,60 @@ class StudentController {
 
   // method store
   async store(req, res) {
-    /**
-     * validasi sederhana
-     * - handle jika salah satu data tidak terkirim
-     */
+    // handle validasi
 
-    // destructing object req.body
+    // jika salah satu data kosong, kirim response.error
     const { nama, nim, email, jurusan } = req.body;
 
-    // jika data undefined maka kirim response error
     if (!nama || !nim || !email || !jurusan) {
       const data = {
-        message: "Semua Data Harus Dikirim",
+        message: "All fields must be filled correctly",
       };
 
       return res.status(422).json(data);
     }
 
-    // handle nim harus berupa angka
+    // cek jika nim bukan berupa angka
     else if (isNaN(nim)) {
       const data = {
-        message: `Data NIM Harus Berupa Angka`,
+        message: `NIM fields must be integer`,
       };
 
       return res.status(422).json(data);
     }
 
-    /**
-     * else
-     * - memanggil method create dari Model Student
-     */
+    // else
     const student = await Student.create(req.body);
 
     const data = {
-      message: `Menambahkan data student`,
+      message: `Resources is Added Successfully`,
       data: student,
     };
 
     return res.status(201).json(data);
+  }
+
+  // method show
+  async show(req, res) {
+    const { id } = req.params;
+
+    // Find student by id
+    const student = await Student.find(id);
+
+    if (student) {
+      const data = {
+        message: `Get Detail Resource`,
+        data: student,
+      };
+
+      res.status(200).json(data);
+    } else {
+      const data = {
+        message: `Resources Not Found`,
+      };
+
+      res.status(404).json(data);
+    }
   }
 
   // method update
@@ -82,19 +94,22 @@ class StudentController {
     // cari id student yang ingin di update
     const student = await Student.find(id);
 
-    // data checking
+    // jika data tersedia lakukan update
     if (student) {
       const student = await Student.update(id, req.body);
 
       const data = {
-        message: `Mengedit data students`,
+        message: `Resources is Update Successfully`,
         data: student,
       };
 
       res.status(200).json(data);
-    } else {
+    }
+
+    // jika tidak, kirim data tidak ada
+    else {
       const data = {
-        message: `Students not found`,
+        message: `Resource Not Found`,
       };
 
       res.status(404).json(data);
@@ -110,36 +125,13 @@ class StudentController {
     if (student) {
       await Student.delete(id);
       const data = {
-        message: `Menghapus data student`,
+        message: `Resource is Deleted Successfully`,
       };
 
       res.status(200).json(data);
     } else {
       const data = {
-        message: `Student not found`,
-      };
-
-      res.status(404).json(data);
-    }
-  }
-
-  // method show
-  async show(req, res) {
-    const { id } = req.params;
-
-    // Find student by id
-    const student = await Student.find(id);
-
-    if (student) {
-      const data = {
-        message: `Menampilkan detail student`,
-        data: student,
-      };
-
-      res.status(200).json(data);
-    } else {
-      const data = {
-        message: `Student not found`,
+        message: `Resource Not Found`,
       };
 
       res.status(404).json(data);
