@@ -3,9 +3,7 @@ const db = require("../config/database");
 
 // membuat class Model Student
 class Student {
-  /**
-   * Membuat method static all.
-   */
+  // method static all
   static all() {
     // return Promise sebagai solusi Asynchronous
     return new Promise((resolve, reject) => {
@@ -20,18 +18,72 @@ class Student {
     });
   }
 
-  /**
-   * TODO 1: Buat fungsi untuk insert data.
-   * Method menerima parameter data yang akan diinsert.
-   * Method mengembalikan data student yang baru diinsert.
-   */
-  static create(data) {
+  // method static create
+  static async create(data) {
     // return Promise
-    return new Promise((resolve, reject) => {
+    const id = await new Promise((resolve, reject) => {
       const sql = "INSERT INTO students SET ?";
 
       db.query(sql, data, (err, results) => {
+        resolve(results.insertId);
+      });
+    });
+
+    /**
+     * refactor
+     * - get data by id
+     */
+    const student = this.find(id);
+    return student;
+  }
+
+  // method static find
+  static find(id) {
+    return new Promise((resolve, reject) => {
+      const sql = "SELECT * FROM students WHERE id = ?";
+
+      db.query(sql, id, (err, results) => {
+        // desctructing array
+        const [student] = results;
+        resolve(student);
+      });
+    });
+  }
+
+  // method static update
+  static async update(id, data) {
+    await new Promise((resolve, reject) => {
+      const sql = "UPDATE students SET ? WHERE id = ?";
+
+      db.query(sql, [data, id], (err, results) => {
         resolve(results);
+      });
+    });
+
+    // find data results update
+    const student = await this.find(id);
+    return student;
+  }
+
+  // method static delete
+  static delete(id) {
+    return new Promise((resolve, reject) => {
+      const sql = "DELETE FROM students WHERE id = ?";
+
+      db.query(sql, id, (err, results) => {
+        resolve(results);
+      });
+    });
+  }
+
+  // method static find
+  static find(id) {
+    return new Promise((resolve, reject) => {
+      const sql = "SELECT * FROM students WHERE id = ?";
+
+      db.query(sql, id, (err, results) => {
+        const [student] = results;
+        resolve(student);
       });
     });
   }
