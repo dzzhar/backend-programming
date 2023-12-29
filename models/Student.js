@@ -9,7 +9,7 @@ class Student {
     // return Promise sebagai solusi Asynchronous
     return new Promise((resolve, reject) => {
       // query all
-      const sql = "SELECT * from students";
+      const sql = "SELECT * FROM students";
       /**
        * Melakukan query menggunakan method query.
        * Menerima 2 params: query dan callback
@@ -42,7 +42,7 @@ class Student {
   // mencari data berdasarkan id
   static find(id) {
     return new Promise((resolve, reject) => {
-      // query find
+      // query select all by id
       const sql = "SELECT * FROM students WHERE id = ?";
 
       db.query(sql, id, (err, results) => {
@@ -74,6 +74,7 @@ class Student {
   // menghapus data student
   static delete(id) {
     return new Promise((resolve, reject) => {
+      // query delete
       const sql = "DELETE FROM students WHERE id = ?";
 
       db.query(sql, id, (err, results) => {
@@ -86,6 +87,7 @@ class Student {
   // melihat detail data student
   static find(id) {
     return new Promise((resolve, reject) => {
+      // query select all by id
       const sql = "SELECT * FROM students WHERE id = ?";
 
       db.query(sql, id, (err, results) => {
