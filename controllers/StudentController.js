@@ -52,6 +52,15 @@ class StudentController {
       return res.status(422).json(data);
     }
 
+    // handle nim harus berupa angka
+    else if (isNaN(nim)) {
+      const data = {
+        message: `Data NIM Harus Berupa Angka`,
+      };
+
+      return res.status(422).json(data);
+    }
+
     /**
      * else
      * - memanggil method create dari Model Student
