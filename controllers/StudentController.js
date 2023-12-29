@@ -118,12 +118,12 @@ class StudentController {
   async show(req, res) {
     const { id } = req.params;
 
-    // find student by id
+    // Find student by id
     const student = await Student.find(id);
 
-    if (student.length > 0) {
+    if (student) {
       const data = {
-        message: `Menampilkan detail students`,
+        message: `Menampilkan detail student`,
         data: student,
       };
 
